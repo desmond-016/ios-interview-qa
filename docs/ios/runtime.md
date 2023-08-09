@@ -96,12 +96,12 @@ NSLog(@"[super superclass] = %@", [super superclass]); // UIViewController
 *   category的方法没有“完全替换掉”原来类已经有的方法，如果category和原来类都有methodA，那么category附加完成之后，类的方法列表里会有两个methodA。
 *   category的方法被放到了新方法列表的前面，而原来类的方法被放到了新方法列表的后面，这也就是我们平常所说的category的方法会“覆盖”掉原来类的同名方法，这是因为运行时在查找方法的时候是顺着方法列表的顺序查找的，它只要一找到对应名字的方法，就会停止查找，殊不知后面可能还有一样名字的方法。
   
-##分类的实现机制和原理
-1通过runtime加载某个类的所有Category数据, 底层是通过 unattachedCategoriesForClass 方法，获取到所属类的分类集合。
-2.调用attachCategories，初始化方法列表、属性列表、协议列表的二维数组。
-3.倒序遍历分类集合，取出分类的方法列表添加到二维数组中。所以后编译的分类方法会先被找到。
-4.获取所属类的 rw 信息，取出所属类的方法列表，将二维数组插入到所属类的方法列表的第0位。
-   ```底层代码 C++
+##分类的实现机制和原理   
+1通过runtime加载某个类的所有Category数据, 底层是通过 unattachedCategoriesForClass 方法，获取到所属类的分类集合。   
+2.调用attachCategories，初始化方法列表、属性列表、协议列表的二维数组。   
+3.倒序遍历分类集合，取出分类的方法列表添加到二维数组中。所以后编译的分类方法会先被找到。    
+4.获取所属类的 rw 信息，取出所属类的方法列表，将二维数组插入到所属类的方法列表的第0位。   
+```底层代码 C++
 static void attachCategories(Class cls, category_list *cats, bool flush_caches)
 {
     // 判断是类对象还是元类对象
